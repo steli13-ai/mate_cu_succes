@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const navigation = [
   { name: "Acasă", href: "/" },
@@ -16,6 +15,28 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hasClerk, setHasClerk] = useState(false);
+  const [ClerkComponents, setClerkComponents] = useState<any>(null);
+
+  useEffect(() => {
+    // Check if Clerk is available
+    const checkClerk = async () => {
+      if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+        try {
+          const clerk = await import("@clerk/nextjs");
+          setClerkComponents({
+            SignedIn: clerk.SignedIn,
+            SignedOut: clerk.SignedOut,
+            UserButton: clerk.UserButton,
+          });
+          setHasClerk(true);
+        } catch (e) {
+          setHasClerk(false);
+        }
+      }
+    };
+    checkClerk();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -52,17 +73,30 @@ export default function Header() {
         </div>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          <SignedOut>
-            <Button asChild variant="ghost">
-              <Link href="/sign-in">Autentificare</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/sign-up">Înregistrare</Link>
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
+          {hasClerk && ClerkComponents ? (
+            <>
+              <ClerkComponents.SignedOut>
+                <Button asChild variant="ghost">
+                  <Link href="/sign-in">Autentificare</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/sign-up">Înregistrare</Link>
+                </Button>
+              </ClerkComponents.SignedOut>
+              <ClerkComponents.SignedIn>
+                <ClerkComponents.UserButton afterSignOutUrl="/" />
+              </ClerkComponents.SignedIn>
+            </>
+          ) : (
+            <>
+              <Button asChild variant="ghost">
+                <Link href="/sign-in">Autentificare</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/sign-up">Înregistrare</Link>
+              </Button>
+            </>
+          )}
         </div>
       </nav>
       
@@ -101,23 +135,40 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="py-6 space-y-2">
-                  <SignedOut>
-                    <Button asChild variant="ghost" className="w-full">
-                      <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
-                        Autentificare
-                      </Link>
-                    </Button>
-                    <Button asChild className="w-full">
-                      <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
-                        Înregistrare
-                      </Link>
-                    </Button>
-                  </SignedOut>
-                  <SignedIn>
-                    <div className="flex justify-center py-2">
-                      <UserButton afterSignOutUrl="/" />
-                    </div>
-                  </SignedIn>
+                  {hasClerk && ClerkComponents ? (
+                    <>
+                      <ClerkComponents.SignedOut>
+                        <Button asChild variant="ghost" className="w-full">
+                          <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                            Autentificare
+                          </Link>
+                        </Button>
+                        <Button asChild className="w-full">
+                          <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                            Înregistrare
+                          </Link>
+                        </Button>
+                      </ClerkComponents.SignedOut>
+                      <ClerkComponents.SignedIn>
+                        <div className="flex justify-center py-2">
+                          <ClerkComponents.UserButton afterSignOutUrl="/" />
+                        </div>
+                      </ClerkComponents.SignedIn>
+                    </>
+                  ) : (
+                    <>
+                      <Button asChild variant="ghost" className="w-full">
+                        <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                          Autentificare
+                        </Link>
+                      </Button>
+                      <Button asChild className="w-full">
+                        <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                          Înregistrare
+                        </Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

@@ -7,12 +7,7 @@ const isProtectedRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
-    try {
-      await auth.protect();
-    } catch (error) {
-      // In development/build time, allow access if Clerk is not configured
-      console.log('Clerk protection skipped:', error);
-    }
+    await auth.protect();
   }
 });
 

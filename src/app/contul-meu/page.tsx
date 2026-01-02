@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { User, Mail, Calendar, CreditCard, Settings } from "lucide-react";
 import {
@@ -17,7 +16,12 @@ import { getPlanById } from "@/lib/plans";
 export const dynamic = 'force-dynamic';
 
 export default function ContulMeuPage() {
-  const { user, isLoaded } = useUser();
+  // Mock user data for demonstration
+  const mockUser = {
+    fullName: "Ion Popescu",
+    email: "ion.popescu@example.com",
+    createdAt: "2024-01-01",
+  };
   
   // Mock subscription data - in production, fetch from database
   const mockSubscription = {
@@ -28,14 +32,6 @@ export default function ContulMeuPage() {
   };
 
   const currentPlan = getPlanById(mockSubscription.tier);
-
-  if (!isLoaded) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">Se încarcă...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="py-20 lg:py-32">
@@ -78,7 +74,7 @@ export default function ContulMeuPage() {
                     <div>
                       <p className="text-sm font-medium">Nume complet</p>
                       <p className="text-sm text-muted-foreground">
-                        {user?.fullName || "Necompletat"}
+                        {mockUser.fullName}
                       </p>
                     </div>
                   </div>
@@ -87,7 +83,7 @@ export default function ContulMeuPage() {
                     <div>
                       <p className="text-sm font-medium">Email</p>
                       <p className="text-sm text-muted-foreground">
-                        {user?.primaryEmailAddress?.emailAddress}
+                        {mockUser.email}
                       </p>
                     </div>
                   </div>
@@ -96,7 +92,7 @@ export default function ContulMeuPage() {
                     <div>
                       <p className="text-sm font-medium">Membru din</p>
                       <p className="text-sm text-muted-foreground">
-                        {new Date(user?.createdAt || "").toLocaleDateString('ro-RO')}
+                        {new Date(mockUser.createdAt).toLocaleDateString('ro-RO')}
                       </p>
                     </div>
                   </div>
