@@ -36,31 +36,55 @@ export function useScrollReveal(options: UseScrollRevealOptions = {}) {
     const adjustedDuration = isMobile ? duration * 0.7 : duration;
 
     // Initial state
-    gsap.set(element, { opacity: 0, y: 40 });
+    if (stagger > 0) {
+      // Set initial state for children when using stagger
+      const children = Array.from(element.children) as HTMLElement[];
+      gsap.set(children, { opacity: 0, y: 40 });
+      
+      // Animation
+      const trigger = ScrollTrigger.create({
+        trigger: element,
+        start: 'top 80%',
+        onEnter: () => {
+          gsap.to(children, {
+            opacity: 1,
+            y: 0,
+            duration: adjustedDuration,
+            delay: delay,
+            stagger: stagger,
+            ease: 'power2.out',
+          });
+        },
+        once: true,
+      });
 
-    // Get children if stagger is specified
-    const targets = stagger > 0 ? Array.from(element.children) : element;
+      return () => {
+        trigger.kill();
+      };
+    } else {
+      // Set initial state for single element
+      gsap.set(element, { opacity: 0, y: 40 });
 
-    // Animation
-    const trigger = ScrollTrigger.create({
-      trigger: element,
-      start: 'top 80%',
-      onEnter: () => {
-        gsap.to(targets, {
-          opacity: 1,
-          y: 0,
-          duration: adjustedDuration,
-          delay: delay,
-          stagger: stagger,
-          ease: 'power2.out',
-        });
-      },
-      once: true,
-    });
+      // Animation
+      const trigger = ScrollTrigger.create({
+        trigger: element,
+        start: 'top 80%',
+        onEnter: () => {
+          gsap.to(element, {
+            opacity: 1,
+            y: 0,
+            duration: adjustedDuration,
+            delay: delay,
+            ease: 'power2.out',
+          });
+        },
+        once: true,
+      });
 
-    return () => {
-      trigger.kill();
-    };
+      return () => {
+        trigger.kill();
+      };
+    }
   }, [duration, delay, stagger]);
 
   return ref;
