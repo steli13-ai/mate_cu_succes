@@ -39,7 +39,7 @@ export function useScrollReveal(options: UseScrollRevealOptions = {}) {
     gsap.set(element, { opacity: 0, y: 40 });
 
     // Get children if stagger is specified
-    const targets = stagger > 0 ? element.children : element;
+    const targets = stagger > 0 ? Array.from(element.children) : element;
 
     // Animation
     const trigger = ScrollTrigger.create({

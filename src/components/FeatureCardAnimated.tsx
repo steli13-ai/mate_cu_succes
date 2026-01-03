@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useHoverAnimation } from '@/hooks/useHoverAnimation';
 
@@ -17,23 +17,25 @@ export default function FeatureCardAnimated({
   description,
   index,
 }: FeatureCardAnimatedProps) {
+  const elementRef = useRef<HTMLDivElement>(null);
   const scrollRef = useScrollReveal({ delay: index * 0.1 });
   const hoverRef = useHoverAnimation({ scale: 1.03, yOffset: -8 });
   
-  // Combine both refs using callback ref
-  const combinedRef = useCallback((node: HTMLDivElement | null) => {
-    // Assign the node to both refs
-    if (scrollRef) {
-      (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-    }
-    if (hoverRef) {
-      (hoverRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+  // Synchronize refs
+  useEffect(() => {
+    if (elementRef.current) {
+      if (scrollRef) {
+        scrollRef.current = elementRef.current;
+      }
+      if (hoverRef) {
+        hoverRef.current = elementRef.current;
+      }
     }
   }, [scrollRef, hoverRef]);
 
   return (
     <div
-      ref={combinedRef}
+      ref={elementRef}
       className="flex flex-col items-center text-center p-6 rounded-lg bg-card border"
     >
       <div className="rounded-full bg-primary/10 p-4 mb-4">

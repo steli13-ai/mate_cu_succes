@@ -23,6 +23,9 @@ export function useCounterAnimation(options: UseCounterAnimationOptions) {
     const element = ref.current;
     if (!element) return;
 
+    // Set initial text content
+    element.textContent = `${prefix}0${suffix}`;
+
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
