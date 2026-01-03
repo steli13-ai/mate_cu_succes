@@ -6,43 +6,13 @@ import { Button } from "@/components/ui/button";
 import PricingCard from "@/components/PricingCard";
 import { PRICING_PLANS } from "@/lib/plans";
 import { motion } from "framer-motion";
+import HeroAnimated from "@/components/HeroAnimated";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/50 py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h1 className="text-4xl font-bold tracking-tight font-serif sm:text-6xl lg:text-7xl">
-              Pregătește-te cu succes pentru
-              <span className="text-primary block mt-2">Evaluarea Națională</span>
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
-              Platformă educațională premium pentru matematică. Materiale complete, 
-              sesiuni live, și suport personalizat pentru succesul tău.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-4">
-              <Button asChild size="lg">
-                <Link href="/pricing">
-                  Vezi abonamentele
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/materiale-gratuite">
-                  Materiale gratuite
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <HeroAnimated />
 
       {/* Features Section */}
       <section className="py-20 lg:py-32">
