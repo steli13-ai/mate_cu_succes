@@ -25,8 +25,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="font-sans antialiased">
+      <body className="antialiased" style={{ fontFamily: 'Satoshi, Inter, system-ui, -apple-system, sans-serif' }}>
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>
