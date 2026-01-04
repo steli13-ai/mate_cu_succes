@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased" style={{ fontFamily: 'Satoshi, Inter, system-ui, -apple-system, sans-serif' }}>
+      <body className="antialiased">
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

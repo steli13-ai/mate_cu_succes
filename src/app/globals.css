@@ -29,6 +29,10 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    
+    /* Design system */
+    --noise-texture: url('/noise.png');
+    --font-primary: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   .dark {
@@ -65,6 +69,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-primary);
   }
 }
 
@@ -86,7 +91,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/noise.png');
+    background-image: var(--noise-texture);
     background-repeat: repeat;
     opacity: 0.12;
     mix-blend-mode: soft-light;
@@ -114,7 +119,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/noise.png');
+    background-image: var(--noise-texture);
     background-repeat: repeat;
     opacity: 0.1;
     mix-blend-mode: soft-light;
